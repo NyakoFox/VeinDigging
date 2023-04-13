@@ -1,0 +1,17 @@
+{
+  "values": [
+    "#minecraft:logs",
+    "#minecraft:leaves",
+    "#c:ores",
+    "#minecraft:coal_ores",
+    "#minecraft:iron_ores",
+    "#minecraft:gold_ores",
+    "#minecraft:redstone_ores",
+    "#minecraft:diamond_ores",
+    "#minecraft:emerald_ores",
+    "#minecraft:lapis_ores",
+    "minecraft:nether_quartz_ore",
+    "minecraft:ancient_debris",
+    "minecraft:glowstone"
+  ]
+}

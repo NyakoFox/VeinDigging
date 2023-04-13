@@ -1,17 +1,26 @@
 plugins {
 	id 'fabric-loom' version '1.1-SNAPSHOT'
 	id 'maven-publish'
+	id "co.uzzu.dotenv.gradle" version "2.0.0"
+	id "com.matthewprenger.cursegradle" version "1.4.0"
+	id "com.modrinth.minotaur" version "2.+"
 }
 
 version = project.mod_version
 group = project.maven_group
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/"
+	}
+	maven {
+		name = "Ladysnake Libs"
+		url = "https://ladysnake.jfrog.io/artifactory/mods"
+	}
+	maven {
+		url "https://maven.shedaniel.me/"
+	}
 }
 
 dependencies {
@@ -23,10 +32,17 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Uncomment the following line to enable the deprecated Fabric API modules. 
-	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
+	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.clothconfig_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
 
-	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
+	modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+
+	modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
 }
 
 base {
@@ -76,5 +92,58 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+import com.modrinth.minotaur.dependencies.ModDependency
+
+modrinth {
+	token = env.MODRINTH_TOKEN.value
+	projectId = 'Qo9d9jpM'
+	versionNumber = project.mod_version
+	versionName = 'VeinDigging ' + project.mod_version
+	uploadFile = remapJar
+	gameVersions = List<String>.of(project.functional_versions.split(","))
+	loaders = ['fabric', 'quilt']
+	changelog = file("changelog.md").text
+	dependencies = [
+			new ModDependency('P7dR8mSH', 'required'), // Fabric API
+			new ModDependency('9s6osm5g', 'required'), // Cloth Config
+			new ModDependency('mOgUt4GM', 'optional') // Mod Menu
+	]
+}
+
+curseforge {
+	apiKey = env.CURSEFORGE_TOKEN.value
+	project {
+		id = '849999'
+		releaseType = 'release'
+		changelog = file("changelog.md").text
+		changelogType = 'markdown'
+
+		for (version in functional_versions.split(",")) {
+			addGameVersion(version)
+		}
+
+		addGameVersion "Java 17"
+		addGameVersion "Fabric"
+		addGameVersion "Quilt"
+
+		relations {
+			requiredDependency("fabric-api")
+			requiredDependency("cloth-config")
+			optionalDependency("modmenu")
+		}
+
+		mainArtifact(remapJar.archiveFile) {
+			displayName = 'VeinDigging ' + project.mod_version
+		}
+
+		afterEvaluate {
+			uploadTask.dependsOn remapJar
+		}
+	}
+	options {
+		forgeGradleIntegration = false
 	}
 }

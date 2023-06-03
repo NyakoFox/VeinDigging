@@ -1,1 +1,1 @@
-Initial release
+Fix broken client-mod check

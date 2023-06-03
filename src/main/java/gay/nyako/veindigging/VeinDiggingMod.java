@@ -58,7 +58,7 @@ public class VeinDiggingMod implements ModInitializer {
 
 		ServerPlayNetworking.registerGlobalReceiver(USING_CLIENT_MOD_PACKET, (server, player, handler, buffer, sender) -> {
 			server.execute(() -> {
-				((PlayerEntityAccess) player).setUsingClientMod(true);
+				((PlayerEntityAccess) player).veindigging$setUsingClientMod(true);
 			});
 		});
 	}
@@ -83,7 +83,7 @@ public class VeinDiggingMod implements ModInitializer {
 	private boolean isShiftMining(PlayerEntity player, BlockState state)
 	{
 		if (!CONFIG.sneakActivation) return false;
-		if (((PlayerEntityAccess) player).usingClientMod()) return false;
+		if (((PlayerEntityAccess) player).veindigging$usingClientMod()) return false;
 		if (!player.isSneaking()) return false;
 
 		if (CONFIG.useGlobalWhitelist) {

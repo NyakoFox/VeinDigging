@@ -4,6 +4,6 @@ public interface PlayerEntityAccess {
     boolean isVeinDigging();
     void setVeinDigging(boolean isExcavating);
 
-    boolean usingClientMod();
-    void setUsingClientMod(boolean usingClientMod);
+    boolean veindigging$usingClientMod();
+    void veindigging$setUsingClientMod(boolean usingClientMod);
 }

@@ -9,7 +9,7 @@ public class VeinDiggingConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public boolean sneakActivation = true;
     @ConfigEntry.Gui.Tooltip
-    public boolean bindActivation = false;
+    public boolean bindActivation = true;
     public boolean useGlobalWhitelist = false;
     public boolean useBindWhitelist = false;
     public boolean useShiftWhitelist = true;

@@ -83,7 +83,7 @@ public class VeinDiggingMod implements ModInitializer {
 	private boolean isShiftMining(PlayerEntity player, BlockState state)
 	{
 		if (!CONFIG.sneakActivation) return false;
-		if (((PlayerEntityAccess) player).veindigging$usingClientMod()) return false;
+		if (((PlayerEntityAccess) player).veindigging$usingClientMod() && CONFIG.bindActivation) return false;
 		if (!player.isSneaking()) return false;
 
 		if (CONFIG.useGlobalWhitelist) {
